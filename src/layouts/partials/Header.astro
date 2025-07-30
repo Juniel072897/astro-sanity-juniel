@@ -1,0 +1,55 @@
+---
+import config from "@/config/config.json";
+import { getLangFromUrl } from "@/lib/utils/languageParser";
+import { urlFor } from "@/lib/urlFor";
+
+const { settings } = config;
+const { pathname } = Astro.url;
+const lang = getLangFromUrl(Astro.url);
+
+// Props passed from Base/index.astro
+const { logo, socialMedia = [], buttonText, buttonLink } = Astro.props;
+---
+
+
+  <nav class="navbar container flex items-center justify-between py-0">
+    <!-- ✅ Logo section -->
+    <div class="flex-shrink-0">
+      {logo?.asset && (
+        <a  class="block">
+          <img
+            src={urlFor(logo.asset).width(140).url()}
+            alt="Logo"
+            class="h-15 w-auto"
+          />
+        </a>
+      )}
+    </div>
+    <div class="flex items-center gap-4">
+      {socialMedia.length > 0 && (
+        <>
+          <!-- @ts-ignore -->
+          {socialMedia.map(({ url, icon, alt }) => (
+            <a href={url} target="_blank" rel="noopener noreferrer" aria-label={alt}>
+              <img
+                src={urlFor(icon).width(24).height(24).url()}
+                alt={alt}
+                class="h-6 w-6"
+              />
+            </a>
+          ))}
+        </>
+      )}
+
+      
+      {buttonText && buttonLink && (
+        <a
+          href={buttonLink}
+          class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full shadow-md text-sm font-semibold transition-all"
+        >
+          {buttonText}
+        </a>
+      )}
+    </div>
+  </nav>
+</header>
