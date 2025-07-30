@@ -1,0 +1,141 @@
+---
+// Component Imports
+import Hero from "@/components/home/Hero.astro";
+import Base from "@/layouts/Base.astro";
+import TrustedLogos from "@/components/TrustedLogos.astro";
+import AiPoweredSection from "@/components/aiPoweredSection.astro";
+import HowItWorksSection from "@/components/HowItWorksSection.astro";
+import GrowthPlansSection from "@/components/GrowthPlansSection.astro";
+import Header from "@/partials/Header.astro";
+import { getLangFromUrl, supportedLang } from "@/lib/utils/languageParser";
+import { sanity } from "@/lib/sanityClient";
+import FooterSection from "@/components/FooterSection.astro"
+
+
+
+// Static Paths for i18n
+export function getStaticPaths() {
+  const paths = supportedLang.map((lang) => ({
+    params: { lang: lang || undefined },
+  }));
+  return paths;
+}
+
+// Lang detection
+const { lang } = Astro.params;
+const language = lang || getLangFromUrl(Astro.url);
+
+// 🟩 Fetch: Hero Section
+const hero = await sanity.fetch(`*[_type == "homePage"][0]{
+  heroTitle,
+  heroBody,
+  heroCtaLabel,
+  heroCtaLink,
+}`) ?? {};
+
+// 🟧 Fetch: Trusted Logos
+const logosData = await sanity.fetch(`*[_type == "trustedLogos"][0]{
+  logos[]{
+    logo,
+    alt
+  }
+}`) ?? {};
+const aiSection = await sanity.fetch(`*[_type == "aiPoweredSection"][0]{
+  callRecording {
+    heading,
+    bullets,
+    successNote,
+    ctaText,
+    ctaLink,
+    imageStack[]{asset}
+  },
+  featuresSectionTitle,
+  featuresSectionBody,
+  features[]{
+    title,
+    description,
+    icon
+  },
+  builtForTrades {
+    heading,
+    subtext,
+    tags,
+    image
+  }
+}`) ?? {};
+const howItWorksData = await sanity.fetch(`*[_type == "howItWorksSection"][0]{
+  sectionHeading,
+  steps[]{
+    stepNumber,
+    title,
+    description,
+    mainImage, // no asset-> here
+    sideImages, // no asset-> here
+    ctaText,
+    ctaLink
+  }
+}`) ?? {};
+const growthPlansData = await sanity.fetch(`*[_type == "growthPlansSection"][0]{
+  heading,
+  subheading,
+  buttonText,
+  buttonLink,
+  centerCharacter,
+  plans[]{
+   title, 
+   icon 
+   }
+}`) ?? {};
+
+// Inline the query
+const headerContent = await sanity.fetch(`*[_type == "headerSection"][0]{
+  logo,
+  socialMedia[]{ icon, url, alt },
+  buttonText,
+  buttonLink
+}`);
+const footerData = await sanity.fetch(`*[_type == "footer"][0]{
+  logo,
+  description,
+  copyright,
+  linkSections[]{
+    title,
+    links[]{ label, href }
+  },
+  socialLinks[]{ platform, url, icon }
+}`) ?? {};
+
+
+
+
+
+
+---
+
+
+
+---
+<Base>
+<Header
+  logo={headerContent.logo}
+  socialMedia={headerContent.socialMedia}
+  buttonText={headerContent.buttonText}
+  buttonLink={headerContent.buttonLink}
+/>
+  <Hero hero={hero} />
+  <TrustedLogos data={logosData} />
+  <AiPoweredSection data={aiSection} />
+<HowItWorksSection data={howItWorksData} />
+  <!-- 🔽 Add the anchor ID here for scroll target -->
+  <section id="GrowthPlansSection">
+    <GrowthPlansSection data={growthPlansData} />
+
+
+
+
+  </section>
+<FooterSection footer={footerData} />
+
+
+
+</Base>

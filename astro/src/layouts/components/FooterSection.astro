@@ -1,0 +1,93 @@
+---
+// src/components/FooterSection.astro
+import { urlFor } from "@/lib/sanityImage";
+
+interface FooterData {
+  logo?: any;
+  description?: string;
+  copyright?: string;
+  linkSections?: {
+    title: string;
+    links: {
+      label: string;
+      href: string;
+    }[];
+  }[];
+  socialLinks?: {
+    platform: string;
+    url: string;
+    icon: any;
+  }[];
+}
+
+const footer = Astro.props.footer as FooterData;
+---
+<footer class="bg-[#2B221E] text-white p-8">
+
+  <!-- Top: Grid layout for logo + links -->
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+    <!-- Column 1: Logo + Description -->
+    <div>
+      {footer?.logo && (
+        <img
+          src={urlFor(footer.logo).url()}
+          alt="Footer Logo"
+          class="h-30 mx-auto md:mx-0 "
+        />
+      )}
+      {footer?.description && (
+        <p class="text-sm">{footer.description}</p>
+      )}
+    </div>
+
+    <!-- Column 2 & 3: Navigation Link Sections -->
+    {footer?.linkSections?.length && footer.linkSections.map((section) => (
+      <div>
+        <h4 class="text-lg font-semibold mb-2">{section.title}</h4>
+        <ul>
+          {section.links?.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="no-underline hover:text-orange-500 text-sm block mb-1"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+
+  <!-- Bottom: Centered on mobile/tablet, spaced on desktop -->
+  <div class="max-w-6xl mx-auto mt-10 flex flex-col gap-4 md:flex-row md:justify-between md:items-center text-center md:text-left text-sm">
+    
+    {footer?.copyright && (
+      <p>{footer.copyright}</p>
+    )}
+
+    {footer?.socialLinks?.length && (
+      <div class="flex justify-center md:justify-end space-x-4">
+        {footer.socialLinks.map((link) => (
+          <a
+            href={link.url}
+            aria-label={link.platform}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-orange-500 transition"
+          >
+            <img
+              src={urlFor(link.icon).url()}
+              alt={link.platform}
+              class="h-5 w-5"
+            />
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+
+</footer>

@@ -1,0 +1,211 @@
+---
+import { urlFor } from "@/lib/sanityImage";
+
+interface Props {
+  data: {
+    callRecording?: {
+      heading?: string;
+      bullets?: string[];
+      successNote?: string;
+      ctaText?: string;
+      ctaLink?: string;
+      imageStack?: any[];
+    };
+    featuresSectionTitle?: string;
+    featuresSectionBody?: string;
+    features?: {
+      icon?: any;
+      title?: string;
+      description?: string;
+    }[];
+    builtForTrades?: {
+      heading?: string;
+      subtext?: string;
+      tags?: {
+        label: string;
+        icon?: any;
+      }[];
+      image?: any;
+    };
+  };
+}
+
+const { data } = Astro.props;
+---
+
+<section class="bg-gradient-radial text-white py-20 px-4">
+  <!-- 🔹 Call Recording Block -->
+  {data.callRecording && (
+    <div class="max-w-7xl mx-auto mb-24 grid grid-cols-1 lg:grid-cols-2 items-center fade-in-up delay-1">
+      <div class="flex flex-wrap justify-center gap-3">
+        {data.callRecording.imageStack?.map((img, i) =>
+          img?.asset && (
+            <img
+              src={urlFor(img).width(500).height(500).fit("max").url()}
+              alt={`Call Image ${i + 1}`}
+              class="rounded-xl"
+            />
+          )
+        )}
+      </div>
+      <div>
+        <h2 class="text-2xl sm:text-4xl font-bold mb-6">{data.callRecording.heading}</h2>
+        <ul class="space-y-3 mb-4 " >
+          {data.callRecording.bullets?.map((b) => (
+            <li class="flex items-start text-sm sm:text-base">
+              <span class="text-red-500 mr-2"></span> {b}
+            </li>
+          ))}
+          {data.callRecording.successNote && (
+            <li class="flex items-start text-sm sm:text-base text-green-400 mt-7 mb-7">
+              {data.callRecording.successNote}
+            </li>
+          )}
+        </ul>
+        {data.callRecording.ctaText && data.callRecording.ctaLink && (
+          <a
+            href={data.callRecording.ctaLink}
+            class="inline-block bg-green-500 text-white font-bold px-6 py-3 rounded-full shadow-[4px_4px_0px_#2d2d2d] hover:bg-white hover:text-orange-500 transition-all fade-in-up delay-2"
+          >
+            {data.callRecording.ctaText}
+          </a>
+        )}
+      </div>
+    </div>
+  )}
+
+  <!-- 🔹 AI Features Section -->
+  {data.features && data.features.length > 0 && (
+    <div class="max-w-6xl mx-auto text-center fade-in-up delay-2">
+      <h2 class="text-4xl font-extrabold mb-2">{data.featuresSectionTitle}</h2>
+      <p class="text-white text-base mb-12 whitespace-pre-line leading-relaxed">
+        {data.featuresSectionBody}
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  justify-items-center ">
+        {data.features.map((feature, index) => (
+          <div class={`text-center mb-10 fade-in-up delay-${index + 3}`}>
+            {feature.icon && (
+              <img
+                src={urlFor(feature.icon).width(140).height(140).fit("max").url()}
+                alt={feature.title || "Feature Icon"}
+                class="mx-auto w-[200px] h-[200px] mb-4 object-contain"
+                loading="lazy"
+              />
+            )}
+            <h3 class="text-white text-2xl font-bold mb-2">{feature.title}</h3>
+            <p class="text-white text-base leading-snug">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- 🔸 Built for Trades -->
+  {data.builtForTrades && (
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-24 fade-in-up delay-3">
+      <!-- Left Card -->
+      <div class="bg-[#2d2d2d]/90 border border-orange-500 rounded-2xl p-8 shadow-lg">
+        <h2 class="text-3xl font-extrabold text-white mb-4 leading-snug">
+          {data.builtForTrades.heading} 
+        </h2>
+        <p class="text-white text-base mb-6 leading-relaxed">
+          {data.builtForTrades.subtext}
+        </p>
+        <div class="flex flex-wrap gap-x-8 gap-y-4">
+          {data.builtForTrades.tags?.map((tag) => (
+            <div class="flex items-center gap-2 text-white text-base mb-2">
+              {tag.icon?.asset ? (
+                <img
+                  src={urlFor(tag.icon).width(100).height(100).fit("max").url()}
+                  alt={tag.label || "Industry Icon"}
+                  class="inline-block w-10 h-10 object-contain"
+                />
+              ) : (
+                <span class="text-orange-500 text-xl">🔥</span>
+              )}
+              <span>{tag.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Right Image -->
+      {data.builtForTrades.image && (
+        <img
+          src={urlFor(data.builtForTrades.image).width(500).fit("max").url()}
+          alt="Trades Chat"
+          class="w-full h-auto rounded-2xl drop-shadow-2xl"
+        />
+      )}
+    </div>
+  )}
+</section>
+
+<!-- 🔁 Animation Styles -->
+<style>
+  .bg-gradient-radial {
+    background: radial-gradient(circle at top right, #eb8e4c, #f26a06 30%, #1a1a1a 60%, #0f0f0f);
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.4s ease-out;
+    will-change: transform, opacity;
+  }
+
+  .fade-in-up.show {
+    animation: fadeInUp 1s ease-out both;
+  }
+
+  .delay-1 { animation-delay: 0.2s; }
+  .delay-2 { animation-delay: 0.4s; }
+  .delay-3 { animation-delay: 0.6s; }
+  .delay-4 { animation-delay: 0.8s; }
+  .delay-5 { animation-delay: 1s; }
+</style>
+
+<!-- 🧠 Intersection Observer: Animate on Scroll -->
+<script type="module">
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.2,
+    }
+  );
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".fade-in-up").forEach((el) => {
+      observer.observe(el);
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+

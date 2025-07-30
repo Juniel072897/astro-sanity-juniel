@@ -1,0 +1,9 @@
+---
+import { getLangFromUrl, slugSelector } from "@/lib/utils/languageParser";
+import { markdownify } from "@/lib/utils/textConverter";
+import Button from "@/shortcodes/Button";
+const lang = getLangFromUrl(Astro.url);
+
+const { call_to_action } = Astro.props;
+---
+

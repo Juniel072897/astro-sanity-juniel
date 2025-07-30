@@ -1,0 +1,144 @@
+---
+import { urlFor } from "@/lib/sanityImage";
+
+export interface Plan {
+  title: string;
+  icon: any;
+}
+
+export interface Props {
+  data: {
+    heading: string;
+    subheading: string;
+    plans: Plan[];
+    buttonText: string;
+    buttonLink: string;
+    centerCharacter: any;
+  };
+}
+
+const { data } = Astro.props as Props;
+
+const {
+  heading,
+  subheading,
+  plans = [],
+  buttonText,
+  buttonLink,
+  centerCharacter,
+} = data;
+
+const leftPlan = plans[0];
+const centerPlan = plans[1];
+const rightPlan = plans[2];
+---
+
+<section class="text-center py-16 bg-gradient-to-b from-[#2c0e00] to-[#3b1d0c] text-white">
+  <!-- Headings -->
+  <h2 class="text-4xl sm:text-5xl font-bold fade-in-up delay-1">{heading}</h2>
+  <p class="text-2xl sm:text-3xl text-orange-400 mt-2 fade-in-up delay-2">{subheading}</p>
+
+  <!-- Mascot and Plans -->
+  <div class="mt-12 flex flex-col items-center justify-center gap-10 fade-in-up delay-3">
+    <!-- Responsive Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 items-start max-w-5xl w-full px-4">
+      <!-- Left Plan -->
+      {leftPlan && (
+        <div class="flex flex-col items-center">
+          <img src={urlFor(leftPlan.icon).url()} alt={leftPlan.title} class="w-32 sm:w-40 h-32 sm:h-40" />
+          <p class="mt-2 text-lg">{leftPlan.title}</p>
+        </div>
+      )}
+
+      <!-- Mascot + Center Plan -->
+      <div class="flex flex-col items-center">
+        {centerCharacter && (
+          <img
+            src={urlFor(centerCharacter).url()}
+            alt="HMSTR Mascot"
+            class="w-44 sm:w-60"
+          />
+        )}
+
+        {centerPlan && (
+          <div class="mt-4">
+            <img
+              src={urlFor(centerPlan.icon).url()}
+              alt={centerPlan.title}
+              class="w-32 sm:w-40 h-32 sm:h-40 mx-auto"
+            />
+            <p class="mt-2 text-xl">{centerPlan.title}</p>
+          </div>
+        )}
+      </div>
+
+      <!-- Right Plan -->
+      {rightPlan && (
+        <div class="flex flex-col items-center">
+          <img src={urlFor(rightPlan.icon).url()} alt={rightPlan.title} class="w-32 sm:w-40 h-32 sm:h-40" />
+          <p class="mt-2 text-lg">{rightPlan.title}</p>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- CTA Button -->
+  <a
+    href={buttonLink}
+    class="inline-block mt-10 px-6 py-3 bg-orange-500 rounded-full shadow-md hover:bg-orange-600 transition fade-in-up delay-4"
+  >
+    {buttonText}
+  </a>
+</section>
+
+<!-- 🧠 Scroll-triggered animation logic -->
+<script type="module">
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.2,
+    }
+  );
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".fade-in-up").forEach((el) => {
+      observer.observe(el);
+    });
+  });
+</script>
+
+<style>
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.4s ease-out;
+    will-change: transform, opacity;
+  }
+
+  .fade-in-up.show {
+    animation: fadeInUp 1s ease-out both;
+  }
+
+  .delay-1 { animation-delay: 0.2s; }
+  .delay-2 { animation-delay: 0.4s; }
+  .delay-3 { animation-delay: 0.6s; }
+  .delay-4 { animation-delay: 0.8s; }
+</style>

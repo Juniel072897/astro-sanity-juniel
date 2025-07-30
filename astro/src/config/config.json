@@ -1,0 +1,46 @@
+{
+  "site": {
+    "title": "Sapick - SaaS & Tailwind Template for IT Industry",
+    "base_url": "https://sapick-astro.vercel.app",
+    "base_path": "/",
+    "trailing_slash": false,
+    "favicon": "/images/favicon.png",
+    "logo": "/images/logo.svg",
+    "logo_width": "131",
+    "logo_height": "36",
+    "logo_text": "Sapick"
+  },
+
+  "settings": {
+    "sticky_header": false,
+    "default_theme": "system",
+    "pagination": 2,
+    "summary_length": 200,
+    "blog_folder": "blog",
+    "default_language": "en",
+    "disable_languages": [],
+    "default_language_in_subdir": false
+  },
+
+  "params": {
+    "contact_form_action": "#",
+    "copyright": "Copyright © 2025 [Themefisher](https://themefisher.com/). All Rights Reserved"
+  },
+
+  "announcement_bar": {
+    "enable": true,
+    "text": "Get Sapick free account only for today, and get your money with referral code"
+  },
+
+  "navigation_button": {
+    "enable": true,
+    "label": "Get This Template",
+    "link": "https://themefisher.com/products/sapick-astro"
+  },
+
+  "metadata": {
+    "meta_author": "Themefisher",
+    "meta_image": "/images/og-image.png",
+    "meta_description": "Sass theme for Astro"
+  }
+}
