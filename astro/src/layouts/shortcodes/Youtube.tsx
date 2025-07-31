@@ -1,6 +1,7 @@
-import React from "react";
-import LiteYouTubeEmbed from "react-lite-youtube-embed";
+// ✅ Correct: Import both the component AND the CSS
+import { LiteYouTubeEmbed } from "react-lite-youtube-embed";
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
+
 
 const Youtube = ({
   id,

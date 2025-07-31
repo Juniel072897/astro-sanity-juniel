@@ -1,3 +1,4 @@
+import netlify from "@astrojs/netlify";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
@@ -36,6 +37,7 @@ export default defineConfig({
   trailingSlash: config.site.trailing_slash ? "always" : "ignore",
   image: { service: sharp() },
   vite: { plugins: [tailwindcss()] },
+  adapter: netlify(), // ✅ THIS LINE IS REQUIRED FOR NETLIFY DEPLOYMENT
   i18n: {
     locales: filteredSupportedLang,
     defaultLocale: default_language,
