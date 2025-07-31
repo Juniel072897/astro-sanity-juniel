@@ -44,3 +44,65 @@ git push
 git add README.md
 git commit -m "Add setup notes to README"
 git push
+
+
+
+
+---
+
+## 🚀 Developer Setup Guide
+
+This project is a monorepo containing:
+
+- `astro/` – Frontend project using Astro
+- `sanity/` – Headless CMS powered by Sanity
+
+### ✅ 1. Clone the Repo
+
+```bash
+git clone https://github.com/YOUR_USERNAME/astro-sanity-juniel.git
+cd astro-sanity-juniel
+
+
+✅ 2. Install Dependencies
+
+
+cd astro
+npm install
+
+cd ../sanity
+npm install
+
+✅ 3. Environment Setup
+Set up any required .env files. Ask the team if you need keys.
+✅ 4. Run Locally
+
+cd astro
+npm run dev
+
+# In another terminal
+cd sanity
+npm run dev
+
+
+
+Note :Astro runs at http://localhost:4321
+Sanity Studio runs at http://localhost:3333
+
+
+
+
+> Tip: If you’re in **Nano**, press `Ctrl + O`, then `Enter` to save, and `Ctrl + X` to exit.
+
+---
+
+### 4. Commit and Push
+
+Once you've saved the file, run these in your terminal:
+
+```bash
+git add README.md
+git commit -m "Add developer setup guide"
+git push
+
+
